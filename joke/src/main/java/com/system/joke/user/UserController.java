@@ -1,12 +1,18 @@
 package com.system.joke.user;
 
 
-import com.sun.tools.internal.xjc.reader.xmlschema.bindinfo.BIConversion;
+
 import com.system.joke.tool.MapTool;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -18,11 +24,36 @@ public class UserController {
     private UserRespond userRespond;
 
 
-    @RequestMapping("/getUserList")
-    public Map getUserList () {
+    @RequestMapping(value = "/getUserList", method = RequestMethod.GET)
+    public Map getUserList (Integer index, Integer size, String keyWord) {
 
-        List body = userRespond.findAll();
-        return MapTool.getMap("200", "请求成功", body);
+        if (index < 0) {
+            return MapTool.getMap("400", "请求失败,页码不能小于0", null);
+        }
+
+        if (size <= 0) {
+            return MapTool.getMap("400", "请求失败,每页返回数量不能小于1", null);
+        }
+
+        List<UserModel> body;
+//      body = userRespond.findAll(Example.of(keyWord), PageRequest.of(index, size)).getContent();
+      body = userRespond.findAll(PageRequest.of(index,size)).getContent();
+
+          if (!keyWord.isEmpty()) {
+              for (int i = 0; i < body.size(); i++) {
+
+                  UserModel user = body.get(i);
+                  if (!user.name.contains(keyWord)) {
+                      body.remove(user);
+                  }
+              }
+          }
+
+            if (body.size() <= 0) {
+                return MapTool.getMap("300", "暂无数据", body);
+            } else  {
+                return MapTool.getMap("200", "请求成功", body);
+            }
 
     }
 
