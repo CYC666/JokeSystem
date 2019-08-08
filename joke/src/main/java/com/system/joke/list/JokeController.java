@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @RestController
 public class JokeController {
@@ -75,8 +75,8 @@ public class JokeController {
         }
 
         jokeService.updateJokeWithIdAndContent(jokeId, jokeContent);
-
         return MapTool.getMap("200", "操作成功", jokeService.getJokeWithId(jokeId));
+
 
     }
 
@@ -84,21 +84,23 @@ public class JokeController {
     @RequestMapping("/AddJoke")
         public Map AddJoke (String jokeContent) {
 
-            // 获取时间
             // id的设置
+            JokeModel lastJoke = jokeService.findAll().get(jokeService.findAll().size() - 1);
+            // 获取时间
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-            jokeService.addJokeWithIdAndContent(2, jokeContent, "08-08");
+            jokeService.addJokeWithIdAndContent(lastJoke.id+1, jokeContent, sdf.format(date));
 
-            JokeModel joke = jokeService.getJokeWithId(1);
+            JokeModel joke = jokeService.getJokeWithId(lastJoke.id+1);
             if (joke != null) {
                 return MapTool.getMap("200", "请求成功", joke);
             } else  {
                 return MapTool.getMap("400", "操作失败", null);
             }
 
-
-
         }
+
 
 
 }
