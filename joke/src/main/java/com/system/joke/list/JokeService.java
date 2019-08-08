@@ -30,5 +30,9 @@ public interface JokeService extends JpaRepository<JokeModel, Integer> {
     @Query(value = "insert into joke_list(id,content,creat_time) values (?1,?2,?3)", nativeQuery = true)
     public void addJokeWithIdAndContent(int jokeId, String jokeContent, String jokeTime);
 
+    // 删除某个段子
+    @Modifying
+    @Query(value = "delete from joke_list where id = ?1", nativeQuery = true)
+    public void delJokeWithId(int jokeId);
 
 }

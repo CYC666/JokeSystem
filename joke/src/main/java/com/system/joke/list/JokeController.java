@@ -50,11 +50,12 @@ public class JokeController {
 
         // 删除段子
     @RequestMapping("/delJokeById")
-     public Map delJokeById (int id) {
+     public Map delJokeById (int jokeId) {
 
-//         jokeService.deleteJokeModelById(id);
 
-         if (!jokeService.existsById(id)) {
+         jokeService.delJokeWithId(jokeId);
+
+         if (!jokeService.existsById(jokeId)) {
 
              return MapTool.getMap("200", "操作成功", null);
          } else  {
@@ -84,7 +85,7 @@ public class JokeController {
     @RequestMapping("/AddJoke")
         public Map AddJoke (String jokeContent) {
 
-            // id的设置
+            // id的设置，获取最后一个joke
             JokeModel lastJoke = jokeService.findAll().get(jokeService.findAll().size() - 1);
             // 获取时间
             Date date = new Date();
