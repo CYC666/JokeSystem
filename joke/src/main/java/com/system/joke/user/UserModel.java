@@ -2,13 +2,14 @@ package com.system.joke.user;
 
 
 import lombok.Data;
+import lombok.Getter;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-//@Data   // 自动实现get、set
+@Data   // 自动实现get、set
 @Entity
 @Table(name="user")
 public class UserModel {
@@ -22,36 +23,11 @@ public class UserModel {
     @Column
     String phone;
 
-    public int getId() {
-        return id;
-    }
+    @Column
+    Integer count;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    @Column
+    String gender;
 
-    public String getName() {
-        return name;
-    }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Override
-    public String toString() {
-        return "UserModel{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", phone='" + phone + '\'' +
-                '}';
-    }
 }

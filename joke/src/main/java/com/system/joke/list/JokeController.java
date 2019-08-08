@@ -2,10 +2,14 @@ package com.system.joke.list;
 
 
 import com.system.joke.tool.MapTool;
+import javafx.geometry.Pos;
+import jdk.nashorn.internal.ir.RuntimeNode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -14,7 +18,7 @@ public class JokeController {
 
     @Autowired
     private JokeService jokeService;
-
+    HttpServletRequest request;
 
     // 获取所有段子
     @RequestMapping("/getJokeList")
@@ -49,9 +53,12 @@ public class JokeController {
         }
 
         // 删除段子
-    @RequestMapping("/delJokeById")
-     public Map delJokeById (int jokeId) {
+    @RequestMapping("/DelJokeById")
+     public Map DelJokeById (int jokeId) {
 
+        if (!jokeService.existsById(jokeId)) {
+            return MapTool.getMap("400", "找不到该段子", null);
+        }
 
          jokeService.delJokeWithId(jokeId);
 
@@ -99,6 +106,15 @@ public class JokeController {
             } else  {
                 return MapTool.getMap("400", "操作失败", null);
             }
+
+        }
+
+        @RequestMapping(value = "/sayHello", method = RequestMethod.POST)
+        public Map sayHello () {
+
+
+
+            return MapTool.getMap("200", "请求成功", obj);
 
         }
 

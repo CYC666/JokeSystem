@@ -37,12 +37,19 @@ public class UserController {
 
         List<UserModel> body;
         body = userRespond.findAll(PageRequest.of(index,size)).getContent();
+        for (int i = 0; i < body.size(); i++) {
 
-            if (body.size() <= 0) {
-                return MapTool.getMap("300", "暂无数据", body);
-            } else  {
-                return MapTool.getMap("200", "请求成功", body);
+            UserModel userModel = body.get(i);
+            if (userModel.count == null) {
+                userModel.count = 0;
             }
+
+        }
+        if (body.size() <= 0) {
+            return MapTool.getMap("300", "暂无数据", body);
+        } else  {
+            return MapTool.getMap("200", "请求成功", body);
+        }
 
     }
 
@@ -76,7 +83,19 @@ public class UserController {
     }
 
 
+    @RequestMapping("/TestFun")
+    public Map TestFun () {
 
+          List<UserModel> body = userRespond.findAll();
+          for (int i = 0; i < body.size(); i++) {
+
+              UserModel userModel = body.get(i);
+              userRespond.updateUserWithId(userModel.id);
+
+          }
+
+        return MapTool.getMap("200", "请求成功", null);
+    }
 
 
 
