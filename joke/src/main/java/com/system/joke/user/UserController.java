@@ -36,18 +36,7 @@ public class UserController {
         }
 
         List<UserModel> body;
-//      body = userRespond.findAll(Example.of(keyWord), PageRequest.of(index, size)).getContent();
-      body = userRespond.findAll(PageRequest.of(index,size)).getContent();
-
-          if (!keyWord.isEmpty()) {
-              for (int i = 0; i < body.size(); i++) {
-
-                  UserModel user = body.get(i);
-                  if (!user.name.contains(keyWord)) {
-                      body.remove(user);
-                  }
-              }
-          }
+        body = userRespond.findAll(PageRequest.of(index,size)).getContent();
 
             if (body.size() <= 0) {
                 return MapTool.getMap("300", "暂无数据", body);
