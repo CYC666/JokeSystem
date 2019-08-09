@@ -5,11 +5,14 @@ import com.system.joke.tool.MapTool;
 import javafx.geometry.Pos;
 import jdk.nashorn.internal.ir.RuntimeNode;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import sun.jvm.hotspot.debugger.NoSuchSymbolException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.plaf.nimbus.NimbusLookAndFeel;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -18,7 +21,7 @@ public class JokeController {
 
     @Autowired
     private JokeService jokeService;
-    HttpServletRequest request;
+    private HttpServletRequest request;
 
     // 获取所有段子
     @RequestMapping("/getJokeList")
@@ -110,11 +113,11 @@ public class JokeController {
         }
 
         @RequestMapping(value = "/sayHello", method = RequestMethod.POST)
-        public Map sayHello () {
+        public Map sayHello (@RequestBody RequestBody body) {
 
+//            String header = request.getHeader("token");
 
-
-            return MapTool.getMap("200", "请求成功", obj);
+            return MapTool.getMap("200", "请求成功", null);
 
         }
 
